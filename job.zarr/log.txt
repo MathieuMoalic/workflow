@@ -1,0 +1,28 @@
+//mumax 3.10 [windows_amd64 go1.17.1(gc) CUDA-10.2]
+//GPU info: NVIDIA GeForce RTX 2080 SUPER(8192MB), CUDA Driver 11.3, cc=7.5, using cc=75 PTX
+//output directory: G:\Mathieu\Nov21\workflow\job2.out/
+Nx := 25
+Ny := 25
+Nz := 1
+dx := 1e-9
+dy := 1e-9
+dz := 1e-9
+setgridsize(Nx, Ny, Nz)
+setcellsize(dx, dy, dz)
+msat = 810e3
+aex = 13e-12
+gammall = 187e9
+cir := circle(25e-9)
+m.setInShape(cir, vortex(1, 1))
+setgeom(cir)
+relax()
+SaveAs(m, "stable")
+Snapshot(m)
+f_cut := 15e09
+t_sampl := 0.5 / (f_cut * 1.4)
+t0 := 10 / f_cut
+B_ext = vector(0.5e-3*sinc(2*pi*f_cut*(t-t0)), 0, 0)
+AutoSaveAs(m, "m", t_sampl)
+tableAutoSave(t_sampl)
+run(150 * t_sampl)
+//********************** Simulation Ended ************************//
